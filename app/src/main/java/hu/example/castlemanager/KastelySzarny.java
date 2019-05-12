@@ -1,16 +1,14 @@
 package hu.example.castlemanager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class KastelySzarny implements Serializable {
+public class KastelySzarny {
 
-    final static int MAX_SZOBAK = 5;
-    final static int LOVAGOK_PER_SZOBA = 3;
-    ArrayList <Lovag> lovagok = new ArrayList<>();
-    int szobak;
-    String name;
+    private final static int MAX_SZOBAK = 5;
+    private final static int LOVAGOK_PER_SZOBA = 3;
+    private ArrayList <Lovag> lovagok = new ArrayList<>();
+    private int szobak;
+    private String name;
 
     KastelySzarny(String name) {
         this.szobak = 0;

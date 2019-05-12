@@ -40,7 +40,6 @@ public class BuyCastleWing extends DialogFragment {
         builder.setPositiveButton("Rendben", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 kastelySzarny = new KastelySzarny(nameInputText.getText().toString().trim());
-                System.out.println("Miva?: "+nameInputText.getText().toString().trim());
                 MainActivity callingActivity = (MainActivity) getActivity();
                 callingActivity.addCastleWing(kastelySzarny);
             }
@@ -57,24 +56,11 @@ public class BuyCastleWing extends DialogFragment {
     }
 
 
-
-
-
-    /*
-   public void setDialogResult(KastelySzarny kastelySzarny){
-        this.kastelySzarny = kastelySzarny;
-    }
-
-    public interface OnMyDialogResult{
-        void finish(KastelySzarny kastelySzarny);
-    }
-    */
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.buy_kastelyszarny, container, false);
-        nameInput = (TextInputLayout) view.findViewById(R.id.name_castlewing);
+        nameInput =  view.findViewById(R.id.name_castlewing);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

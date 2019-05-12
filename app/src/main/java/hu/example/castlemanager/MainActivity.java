@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     AlarmManager alarm;
     BroadcastReceiver br;
     ArrayList<KastelySzarny> kastelySzarnyak;
-    //ArrayList<String> castleWingNames;
     long choosenCastleWing;
 
     @Override
@@ -39,15 +37,12 @@ public class MainActivity extends AppCompatActivity {
         TextView resultText = findViewById(R.id.result_text);
         loadSharedPreferencies();
         resultText.setText(deleteWingOnCreate(getIntent().getIntExtra("deleteCastleWing",-1)));
-        //getIntent().getStringExtra("dolog");
         infoText.setText(getIntent().getStringExtra("attackResult"));
         getIntent().removeExtra("deleteCastleWing");
         getIntent().removeExtra("attackResult");
         makeList();
         this.alarm = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         this.br = new AttackReciver();
-        //IntentFilter filter = new IntentFilter("tamadas.MainActivity");
-        //this.registerReceiver(this.br, filter);
     }
 
     private String deleteWingOnCreate(int deleteCastleWing) {
@@ -80,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Kastely szarnyak kilistazasa
     public void makeList() {
-        ListAdapter castleAdapter = new ArrayAdapter<KastelySzarny>(this, android.R.layout.simple_list_item_1, kastelySzarnyak);
+        ListAdapter castleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, kastelySzarnyak);
         ListView castleListView = findViewById(R.id.castles);
         castleListView.setAdapter(castleAdapter);
         castleListView.setOnItemClickListener(
@@ -88,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         choosenCastleWing = id;
-                        buyDialog((KastelySzarny) parent.getItemAtPosition(position));
+                        buyDialog();
                     }
                 }
         );
@@ -117,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    private void buyDialog(KastelySzarny kastelySzarny) {
+    //Lovag, szoba vasarlas
+    private void buyDialog() {
 
         BuyDialog buyDialog = new BuyDialog();
         buyDialog.show(getSupportFragmentManager(), "Vásarlas");
@@ -126,13 +121,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addLovagToCastleWing () {
-        kastelySzarnyak.get((int)choosenCastleWing).addLovag();
-        makeList();
+        if (kastelySzarnyak.get((int)choosenCastleWing).addLovag()) {
+            makeList();
+        } else {
+            Toast.makeText(getApplicationContext(),"Egy szobába csak 3 Lovag fér be",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void addSzobaToCastleWing () {
-        kastelySzarnyak.get((int)choosenCastleWing).addSzoba();
-        makeList();
+        if (kastelySzarnyak.get((int)choosenCastleWing).addSzoba()) {
+            makeList();
+        } else {
+            Toast.makeText(getApplicationContext(),"Egy Szárnyba Maximum 5 szoba építhető ki",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void addCastleWing(KastelySzarny kastelySzarny) {
@@ -157,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public void onRestart() {
         super.onRestart();
@@ -166,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //unregisterReceiver(this.br);
     }
 
 }

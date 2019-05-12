@@ -26,8 +26,6 @@ public class BuyDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        //View view = inflater.inflate(R.layout.buy_dialog, null);
-        //builder.setView(view);
         builder.setTitle("Kastélyszárny bővítés");
         builder.setSingleChoiceItems(selectableItems, 0, new DialogInterface.OnClickListener() {
             @Override
